@@ -1,16 +1,28 @@
 /** @jsxImportSource @emotion/react */
 
-import { Avatar } from '@/components/avatar'
-import { Button } from '@/components/button'
-import { EmptyContacts, EmptyFavouritesContact } from '@/components/empty-state'
-import { Input } from '@/components/input'
+import { Avatar } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useToggle } from '@/hooks/useToggle'
 import { useGetContacts } from '@/services/contact'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { jade, slate } from '@radix-ui/colors'
+import dynamic from 'next/dynamic'
 import { HiDotsVertical, HiPlus } from 'react-icons/hi'
 
+const EmptyContacts = dynamic(() =>
+  import('@/components/ui/empty-state').then((c) => c.EmptyContacts),
+)
+const EmptyFavouritesContact = dynamic(() =>
+  import('@/components/ui/empty-state').then((c) => c.EmptyFavouritesContact),
+)
+const AddContactDialog = dynamic(() =>
+  import('@/components/contact/add-contact-dialog').then((c) => c.AddContactDialog),
+)
+
 export default function Home() {
+  const [open, toggle] = useToggle()
   const { data } = useGetContacts()
   const favourites = []
 
@@ -26,9 +38,10 @@ export default function Home() {
           `}
         >
           <Input placeholder="Search contact" />
-          <Button size="icon">
+          <Button size="icon" onClick={toggle}>
             <HiPlus style={{ width: '1rem', height: '1rem', color: jade.jade11 }} />
           </Button>
+          {open && <AddContactDialog open={open} onOpenChange={toggle} />}
         </div>
       </Header>
       <ContactContainer>
@@ -103,11 +116,12 @@ const ContactContainerTitle = styled.h2`
 const ContactList = styled.ul`
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
 `
 const ContactItem = styled.li`
   display: flex;
   align-items: center;
-  padding: 0.75rem;
+  padding: 0.5rem;
   background-color: ${slate.slate1};
   border: 1px solid ${slate.slate3};
   border-radius: 4px;
@@ -117,7 +131,7 @@ const ContactItemContent = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-left: 1rem;
+  margin-left: 0.75rem;
 `
 const ContactItemInfo = styled.div`
   display: flex;
@@ -128,8 +142,12 @@ const ContactItemInfoName = styled.span`
   font-size: 0.875rem;
   font-weight: 500;
   color: ${slate.slate12};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 25ch;
 `
 const ContactItemInfoPhoneNumber = styled.small`
-  font-size: 0.75 rem;
+  font-size: 0.75rem;
   color: ${slate.slate11};
 `
