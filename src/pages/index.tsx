@@ -2,39 +2,49 @@
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { gql, useQuery } from '@apollo/client'
+import { graphql } from '@/gql'
+import { Order_By } from '@/gql/graphql'
+import { useQuery } from '@apollo/client'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { jade, slate } from '@radix-ui/colors'
 import { HiPlus } from 'react-icons/hi'
 
-export default function Home() {
-  const { data } = useQuery(gql`
-    query GetContactList(
-      $distinct_on: [contact_select_column!]
-      $limit: Int
-      $offset: Int
-      $order_by: [contact_order_by!]
-      $where: contact_bool_exp
+const getContacts = graphql(`
+  query GetContacts(
+    $distinct_on: [contact_select_column!]
+    $limit: Int
+    $offset: Int
+    $order_by: [contact_order_by!]
+    $where: contact_bool_exp
+  ) {
+    contact(
+      distinct_on: $distinct_on
+      limit: $limit
+      offset: $offset
+      order_by: $order_by
+      where: $where
     ) {
-      contact(
-        distinct_on: $distinct_on
-        limit: $limit
-        offset: $offset
-        order_by: $order_by
-        where: $where
-      ) {
-        created_at
-        id
-        first_name
-        last_name
-        phones {
-          number
-        }
+      created_at
+      id
+      first_name
+      last_name
+      phones {
+        number
       }
     }
-  `)
-  console.log('🚀 ~ file: index.tsx:35 ~ data:', data)
+  }
+`)
+
+export default function Home() {
+  const { data } = useQuery(getContacts, {
+    variables: {
+      order_by: {
+        created_at: Order_By.Desc,
+      },
+    },
+  })
+
   return (
     <Main>
       <Header>
