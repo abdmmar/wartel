@@ -2,6 +2,7 @@ import { graphql } from "@/gql";
 import { GetContactsQuery, GetContactsQueryVariables, Order_By } from "@/gql/graphql";
 import { QueryHookOptions, useQuery } from "@apollo/client";
 
+export const getContactsQueryKey = 'GetContacts'
 const getContacts = graphql(`
   query GetContacts(
     $distinct_on: [contact_select_column!]

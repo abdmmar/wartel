@@ -29,6 +29,6 @@ const createContact = graphql(`
 }
 `)
 
-type CreateContactOptions = MutationHookOptions<CreateContactMutation, CreateContactMutationVariables>
+export type CreateContactMutationOptions = MutationHookOptions<CreateContactMutation, CreateContactMutationVariables>
 
-export const useCreateContactMutation = (option: CreateContactOptions) => useMutation(createContact, option)
+export const useCreateContactMutation = (option?: CreateContactMutationOptions) => useMutation(createContact, option)

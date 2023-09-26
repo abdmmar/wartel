@@ -47,11 +47,11 @@ export default function Home() {
             <ContactItem key={contact.id}>
               <Avatar
                 name={`${contact.first_name} ${contact.last_name}`}
-              >{`${contact.first_name[0]}${contact.last_name[0]}`}</Avatar>
+              >{`${contact.first_name[0].toUpperCase()}${contact.last_name[0].toUpperCase()}`}</Avatar>
               <ContactItemContent>
                 <ContactItemInfo>
                   <ContactItemInfoName>
-                    `${contact.first_name} ${contact.last_name}`
+                    {contact.first_name} {contact.last_name}
                   </ContactItemInfoName>
                   <ContactItemInfoPhoneNumber>
                     {contact.phones[0].number}

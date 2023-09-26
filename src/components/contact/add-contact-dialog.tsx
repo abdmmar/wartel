@@ -1,11 +1,26 @@
 import { AddContactForm } from '@/components/contact/add-contact-form'
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
 import { AddContactSchema } from '@/schemas/contact'
+import { useCreateContact } from '@/services/contact'
 import { DialogProps } from '@radix-ui/react-dialog'
+import toast from 'react-hot-toast'
 
 export const AddContactDialog = (props: DialogProps) => {
-  const onSubmit = (data: AddContactSchema) => {
-    console.log(data)
+  const { createContact, loading } = useCreateContact()
+
+  const onSubmit = async (data: AddContactSchema) => {
+    try {
+      const result = await createContact(data)
+
+      if (result.data) {
+        toast.success('Contact added successfully!')
+        props?.onOpenChange?.(false)
+      }
+    } catch (error) {
+      toast.error((error as Error).message, {
+        style: { minWidth: 'fit-content' },
+      })
+    }
   }
 
   return (
@@ -15,7 +30,7 @@ export const AddContactDialog = (props: DialogProps) => {
           title="Add New Contact"
           description="Enter contact details to add a new entry"
         />
-        <AddContactForm onSubmit={onSubmit} />
+        <AddContactForm isLoading={loading} onSubmit={onSubmit} />
       </DialogContent>
     </Dialog>
   )

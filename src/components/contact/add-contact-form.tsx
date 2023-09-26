@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Input, Label } from '@/components/ui/input'
+import { Loader } from '@/components/ui/loader'
 import { AddContactSchema, addContactSchema } from '@/schemas/contact'
 import styled from '@emotion/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,9 +10,10 @@ import { HiMinus, HiPlus } from 'react-icons/hi'
 
 type AddContactFormProps = {
   onSubmit: (data: AddContactSchema) => void
+  isLoading?: boolean
 }
 
-export const AddContactForm = ({ onSubmit }: AddContactFormProps) => {
+export const AddContactForm = ({ onSubmit, isLoading }: AddContactFormProps) => {
   const { formState, register, control, handleSubmit } = useForm<AddContactSchema>({
     resolver: zodResolver(addContactSchema),
     mode: 'onBlur',
@@ -69,8 +71,8 @@ export const AddContactForm = ({ onSubmit }: AddContactFormProps) => {
         ))}
         <ErrorText>{formState.errors.phones?.message}</ErrorText>
       </div>
-      <Button variant="primary" type="submit">
-        Save
+      <Button variant="primary" type="submit" disabled={isLoading}>
+        {isLoading ? <Loader /> : 'Save'}
       </Button>
     </AddNewForm>
   )

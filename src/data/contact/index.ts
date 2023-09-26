@@ -1,5 +1,6 @@
-export * from './CreateContactMutation';
 export * from './DeleteContactMutation';
 export * from './GetContactQuery';
 export * from './GetContactsLocal';
-export * from './GetContactsQuery';
+export * from './create-contact-mutation';
+export * from './get-contacts-query';
+
