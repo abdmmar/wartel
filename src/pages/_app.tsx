@@ -10,7 +10,12 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-const inter = Inter({ weight: ['400', '500', '600'], style: ['normal'], subsets: ['latin'] })
+const inter = Inter({
+  weight: ['400', '500', '600'],
+  style: ['normal'],
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -22,6 +27,13 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ApolloProvider client={client}>
+        <style jsx global>
+          {`
+            html {
+              font-family: ${inter.style.fontFamily};
+            }
+          `}
+        </style>
         <div className={`${inter.className}`}>
           <Toaster />
           <Component {...pageProps} />
