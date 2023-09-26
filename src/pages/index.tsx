@@ -1,11 +1,8 @@
-/** @jsxImportSource @emotion/react */
-
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToggle } from '@/hooks/useToggle'
 import { useGetContacts } from '@/services/contact'
-import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { jade, slate } from '@radix-ui/colors'
 import dynamic from 'next/dynamic'
@@ -30,19 +27,13 @@ export default function Home() {
     <Main>
       <Header>
         <H1>Phone</H1>
-        <div
-          css={css`
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-          `}
-        >
+        <HeaderAction>
           <Input placeholder="Search contact" />
           <Button size="icon" onClick={toggle}>
             <HiPlus style={{ width: '1rem', height: '1rem', color: jade.jade11 }} />
           </Button>
           {open && <AddContactDialog open={open} onOpenChange={toggle} />}
-        </div>
+        </HeaderAction>
       </Header>
       <ContactContainer>
         <ContactContainerTitle>Favourites</ContactContainerTitle>
@@ -87,6 +78,11 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+`
+const HeaderAction = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `
 const H1 = styled.h1`
   font-size: 1.5rem;
