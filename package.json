@@ -15,6 +15,7 @@
     "@apollo/client": "3.8.4",
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
+    "@radix-ui/colors": "3.0.0-rc.4",
     "@radix-ui/react-accordion": "1.1.2",
     "@radix-ui/react-dialog": "1.0.5",
     "@radix-ui/react-dropdown-menu": "2.0.6",
