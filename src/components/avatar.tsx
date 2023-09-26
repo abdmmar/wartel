@@ -1,4 +1,4 @@
-import { generateColorHSL } from '@/utils/toHex'
+import { generateColorHSL } from '@/utils/color'
 import { slate } from '@radix-ui/colors'
 
 export const Avatar = ({ name, children }: { name: string; children: React.ReactNode }) => {
