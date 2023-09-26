@@ -66,12 +66,7 @@ export default function Home() {
                     {contact.phones[0].number}
                   </ContactItemInfoPhoneNumber>
                 </ContactItemInfo>
-                <Button
-                  size="icon"
-                  css={css`
-                    border: none;
-                  `}
-                >
+                <Button size="icon" variant="ghost">
                   <HiDotsVertical />
                 </Button>
               </ContactItemContent>
