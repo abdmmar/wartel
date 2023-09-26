@@ -1,11 +1,10 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import { jade, slate } from '@radix-ui/colors'
 import * as React from 'react'
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-const inputStyles = css`
+const InputStyles = styled.input`
   flex: 1;
   height: 2.25rem;
   width: 100%;
@@ -36,22 +35,17 @@ const inputStyles = css`
   }
 `
 
+const Label = styled.label`
+  font-size: 1rem;
+  color: ${slate.slate11};
+`
+
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={className}
-        css={css`
-          ${inputStyles};
-        `}
-        ref={ref}
-        {...props}
-      />
-    )
+    return <InputStyles type={type} className={className} ref={ref} {...props} />
   },
 )
 
 Input.displayName = 'Input'
 
-export { Input }
+export { Input, Label }

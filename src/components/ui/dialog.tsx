@@ -1,8 +1,10 @@
+import { Button } from '@/components/ui/button'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { blackA, jade } from '@radix-ui/colors'
+import { blackA, slate } from '@radix-ui/colors'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import * as React from 'react'
+import { HiX } from 'react-icons/hi'
 
 const overlayShow = keyframes`
   0% { opacity: 0; }
@@ -39,7 +41,7 @@ const DialogContentBox = styled(DialogPrimitive.Content)`
   width: 90vw;
   max-width: 450px;
   max-height: 85vh;
-  padding: 25px;
+  padding: 1.2rem;
   animation: ${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1);
   &:focus {
     outline: none;
@@ -58,16 +60,41 @@ export const DialogContent = React.forwardRef<
   </DialogPortal>
 ))
 
-export const DialogTitle = styled(DialogPrimitive.Title)`
-  margin: 0;
-  font-weight: 500;
-  color: ${jade.jade12};
-  font-size: 17px;
-`
+type DialogHeaderProps = {
+  title: string
+  description: string
+}
+export const DialogHeader = ({ title, description }: DialogHeaderProps) => {
+  return (
+    <DialogHeaderContainer>
+      <DialogInfo>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogDescription>{description}</DialogDescription>
+      </DialogInfo>
+      <DialogClose asChild>
+        <Button variant="ghost" size="icon">
+          <HiX style={{ width: '20px', height: '20px', color: slate.slate11 }} />
+        </Button>
+      </DialogClose>
+    </DialogHeaderContainer>
+  )
+}
 
-export const DialogDescription = styled(DialogPrimitive.Description)`
-  margin: 10px 0 20px;
-  color: ${jade.jade11};
-  font-size: 15px;
-  line-height: 1.5;
+const DialogHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+`
+const DialogInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`
+const DialogTitle = styled(DialogPrimitive.Title)`
+  font-size: 1.25rem;
+  color: ${slate.slate12};
+`
+const DialogDescription = styled(DialogPrimitive.Description)`
+  font-size: 0.875rem;
+  color: ${slate.slate11};
 `

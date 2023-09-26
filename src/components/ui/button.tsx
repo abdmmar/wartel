@@ -8,7 +8,7 @@ const buttonStyles = css`
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   border: none;
   border: 1px solid ${slate.slate6};
@@ -39,6 +39,26 @@ const buttonStyles = css`
     background: ${jade.jade2};
   }
 
+  &.primary {
+    background-color: ${jade.jade11};
+    color: ${slate.slate1};
+  }
+
+  &.ghost {
+    border: none;
+
+    :focus-visible {
+      border: 1px solid;
+      outline: none;
+      border-color: ${jade.jade11};
+      box-shadow: 0 0 0 0.125rem ${jade.jade3};
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
   &.sm {
     height: 2rem;
     font-size: 0.75rem;
@@ -62,6 +82,11 @@ const buttonStyles = css`
   }
 `
 
+const styleVariant = {
+  ghost: 'ghost',
+  primary: 'primary',
+}
+
 const sizeVariant = {
   sm: 'sm',
   lg: 'lg',
@@ -71,15 +96,18 @@ const sizeVariant = {
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: keyof typeof sizeVariant
+  variant?: keyof typeof styleVariant
   asChild?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, size = 'default', ...props }, ref) => {
+  ({ className, size = 'default', variant, ...props }, ref) => {
     return (
       <button
         css={buttonStyles}
-        className={`${className} ${size ? sizeVariant[size] : ''}`}
+        className={`${className} ${size ? sizeVariant[size] : ''} ${
+          variant ? styleVariant[variant] : ''
+        }`}
         ref={ref}
         {...props}
       />
