@@ -29,8 +29,6 @@ export const ApolloProvider = ({ children }: { children: React.ReactNode }) => {
       let newPersistor = new CachePersistor({
         cache,
         storage: new LocalStorageWrapper(window.localStorage),
-        debug: true,
-        trigger: 'write',
       })
       await newPersistor.restore()
 
