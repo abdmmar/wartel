@@ -1,7 +1,7 @@
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Loader } from '@/components/ui/loader'
+import { Spinner } from '@/components/ui/loader'
 import { useToggle } from '@/hooks/useToggle'
 import { useGetContacts } from '@/services/contact'
 import { keyframes } from '@emotion/react'
@@ -27,7 +27,6 @@ export default function Home() {
 
   const { data, loading, fetchMore, pagination } = useGetContacts({
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network',
   })
 
   const { ref, inView } = useInView({
@@ -60,18 +59,9 @@ export default function Home() {
         <ContactContainerTitle>All Contacts</ContactContainerTitle>
         {data?.contact.length === 0 ? <EmptyContacts /> : null}
         {loading === true ? (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: '1rem',
-              justifyContent: 'center',
-              flexDirection: 'column',
-            }}
-          >
-            <Loader color={slate.slate11} />
+          <Spinner>
             <p color={slate.slate11}>Fetching your contacts...</p>
-          </div>
+          </Spinner>
         ) : null}
         <ContactList>
           {data?.contact.map((contact) => (
@@ -116,22 +106,7 @@ export default function Home() {
               </ContactItemContent>
             </ContactItem>
           ))}
-          <div ref={ref}>
-            {inView && pagination.hasNextPage ? (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '1rem',
-                  justifyContent: 'center',
-                }}
-              >
-                <Loader color={slate.slate11} />
-              </div>
-            ) : (
-              <div />
-            )}
-          </div>
+          <div ref={ref}>{inView && pagination.hasNextPage ? <Spinner /> : <div />}</div>
         </ContactList>
       </ContactContainer>
     </Main>
