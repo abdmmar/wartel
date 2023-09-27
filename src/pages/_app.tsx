@@ -1,23 +1,9 @@
+import { ApolloProvider } from '@/components/provider'
 import '@/styles/globals.css'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-import { offsetLimitPagination } from '@apollo/client/utilities'
 import type { AppProps } from 'next/app'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import { Toaster } from 'react-hot-toast'
-
-const client = new ApolloClient({
-  uri: 'https://wpe-hiring.tokopedia.net/graphql',
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          contact: offsetLimitPagination(['distinct_on', 'order_by', 'where']),
-        },
-      },
-    },
-  }),
-})
 
 const inter = Inter({
   weight: ['400', '500', '600'],
@@ -35,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ApolloProvider client={client}>
+      <ApolloProvider>
         <style jsx global>
           {`
             html {
