@@ -16,3 +16,20 @@ export const Loader = styled.div<{ width?: string; height?: string; color?: stri
   box-sizing: border-box;
   animation: ${spin} 1s linear infinite;
 `
+
+export const Spinner = ({ children }: { children?: React.ReactNode }) => {
+  return (
+    <LoaderWrapper>
+      <Loader color={slate.slate11} />
+      {children}
+    </LoaderWrapper>
+  )
+}
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  justify-content: center;
+  flex-direction: column;
+`
