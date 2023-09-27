@@ -1,21 +1,25 @@
 import {
   CreateContactMutationOptions,
   getContactsQueryKey,
-  useCreateContactMutation,
+  useCreateContactMutation
 } from '@/data/contact'
 import { CreateContactMutationVariables } from '@/gql/graphql'
-import { useApolloClient } from '@apollo/client'
+import { PaginationDefaultValue, getContactsPaginationVar } from '@/services/contact'
 
 export const useCreateContact = (options?: CreateContactMutationOptions) => {
-  const client = useApolloClient()
   const [mutate, rest] = useCreateContactMutation(options)
 
   const createContact = async (input: CreateContactMutationVariables) => {
     try {
       const result = await mutate({
         variables: input,
-        refetchQueries: [getContactsQueryKey], // TODO: use optimistic update
+        refetchQueries: [getContactsQueryKey],
       })
+
+      if (result.data) {
+        getContactsPaginationVar(PaginationDefaultValue)
+      }
+
       return result
     } catch (error) {
       throw new Error('Failed to create the contact. Please try again later')

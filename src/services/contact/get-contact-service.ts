@@ -3,12 +3,13 @@ import { Order_By } from '@/gql/graphql'
 import { makeVar, useReactiveVar } from '@apollo/client'
 
 const LIMIT = 10
-const getContactsPaginationVar = makeVar({
+export const PaginationDefaultValue = {
   initial: true,
   hasNextPage: false,
   nextPage: 1,
   total: 0,
-})
+}
+export const getContactsPaginationVar = makeVar(PaginationDefaultValue)
 
 export const useGetContacts = (options?: GetContactsQueryOptions) => {
   const pagination = useReactiveVar(getContactsPaginationVar);
