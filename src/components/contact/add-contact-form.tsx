@@ -46,9 +46,8 @@ export const AddContactForm = ({ onSubmit, isLoading }: AddContactFormProps) => 
       <div>
         <Label htmlFor="phones.0.number">Phone number</Label>
         {fields.map((field, index) => (
-          <FieldArrayContainer>
+          <FieldArrayContainer key={field.id}>
             <Input
-              key={field.id}
               type="tel"
               inputMode="tel"
               placeholder="Phone number"
