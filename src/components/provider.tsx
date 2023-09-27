@@ -37,6 +37,7 @@ export const ApolloProvider = ({ children }: { children: React.ReactNode }) => {
         new ApolloClient({
           uri: 'https://wpe-hiring.tokopedia.net/graphql',
           cache,
+          connectToDevTools: process.env.NODE_ENV === 'development',
         }),
       )
     }
