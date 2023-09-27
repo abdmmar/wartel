@@ -9,7 +9,6 @@ import styled from '@emotion/styled'
 import { jade, slate, yellow } from '@radix-ui/colors'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import dynamic from 'next/dynamic'
-import * as React from 'react'
 import { HiDotsVertical, HiOutlinePencil, HiPlus, HiStar } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
 
@@ -23,49 +22,18 @@ const AddContactDialog = dynamic(() =>
   import('@/components/contact/add-contact-dialog').then((c) => c.AddContactDialog),
 )
 
-const LIMIT = 10
-
 export default function Home() {
   const [open, toggle] = useToggle()
-  const [pagination, setPagination] = React.useState({
-    initial: true,
-    hasNextPage: false,
-    nextPage: 1,
-    total: 0,
-  })
 
-  const { data, fetchMore } = useGetContacts({
+  const { data, loading, fetchMore, pagination } = useGetContacts({
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'cache-and-network',
-    onCompleted(data) {
-      if (data.contact.length === LIMIT && pagination.initial) {
-        setPagination((p) => ({
-          ...p,
-          initial: false,
-          nextPage: p.nextPage + 1,
-          hasNextPage: true,
-          total: data.contact.length,
-        }))
-      }
-    },
   })
 
   const { ref, inView } = useInView({
     onChange: async (inView) => {
       if (inView && pagination.hasNextPage) {
-        const data = await fetchMore(pagination.nextPage)
-
-        if (data.contact.length === LIMIT) {
-          setPagination((p) => ({
-            ...p,
-            initial: false,
-            nextPage: p.nextPage + 1,
-            hasNextPage: true,
-            total: p.total + data.contact.length,
-          }))
-        } else {
-          setPagination((p) => ({ ...p, hasNextPage: false }))
-        }
+        await fetchMore(pagination.nextPage)
       }
     },
   })
@@ -91,6 +59,20 @@ export default function Home() {
       <ContactContainer>
         <ContactContainerTitle>All Contacts</ContactContainerTitle>
         {data?.contact.length === 0 ? <EmptyContacts /> : null}
+        {loading === true ? (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              padding: '1rem',
+              justifyContent: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <Loader color={slate.slate11} />
+            <p color={slate.slate11}>Fetching your contacts...</p>
+          </div>
+        ) : null}
         <ContactList>
           {data?.contact.map((contact) => (
             <ContactItem key={contact.id}>
