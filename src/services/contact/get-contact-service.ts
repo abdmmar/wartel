@@ -1,6 +1,6 @@
-import { GetContactsQueryOptions, getContacts, saveContacts, useGetContactsQuery } from "@/data/contact";
-import { Order_By } from '@/gql/graphql';
-import * as React from 'react';
+import { GetContactsQueryOptions, saveContacts, useGetContactsQuery } from '@/data/contact'
+import { Order_By } from '@/gql/graphql'
+import * as React from 'react'
 
 export const useGetContacts = (options?: GetContactsQueryOptions) => {
   const { data, loading, fetchMore: fetchMore_, ...rest } = useGetContactsQuery(options)
@@ -16,20 +16,19 @@ export const useGetContacts = (options?: GetContactsQueryOptions) => {
       variables: {
         offset: next * 10,
         order_by: {
-          created_at: Order_By.Desc
+          created_at: Order_By.Desc,
+        },
+      },
+      updateQuery(previousQueryResult, options) {
+        const newEntries = options.fetchMoreResult.contact
+        return {
+          ...options.fetchMoreResult,
+          contact: previousQueryResult.contact.concat(newEntries),
         }
-      }
+      },
     })
 
-    if (result.data) {
-      const currentData = getContacts()
-
-      if (currentData) {
-        saveContacts({ ...currentData, contact: currentData?.contact.concat(result.data.contact) })
-      }
-
-      return result.data
-    }
+    return result.data
   }
 
   return { data, loading, fetchMore, ...rest }

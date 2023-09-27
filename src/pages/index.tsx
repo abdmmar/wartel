@@ -1,6 +1,7 @@
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Loader } from '@/components/ui/loader'
 import { useToggle } from '@/hooks/useToggle'
 import { useGetContacts } from '@/services/contact'
 import { keyframes } from '@emotion/react'
@@ -8,7 +9,9 @@ import styled from '@emotion/styled'
 import { jade, slate, yellow } from '@radix-ui/colors'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import dynamic from 'next/dynamic'
+import * as React from 'react'
 import { HiDotsVertical, HiOutlinePencil, HiPlus, HiStar } from 'react-icons/hi'
+import { useInView } from 'react-intersection-observer'
 
 const EmptyContacts = dynamic(() =>
   import('@/components/ui/empty-state').then((c) => c.EmptyContacts),
@@ -20,9 +23,53 @@ const AddContactDialog = dynamic(() =>
   import('@/components/contact/add-contact-dialog').then((c) => c.AddContactDialog),
 )
 
+const LIMIT = 10
+
 export default function Home() {
   const [open, toggle] = useToggle()
-  const { data } = useGetContacts()
+  const [pagination, setPagination] = React.useState({
+    initial: true,
+    hasNextPage: false,
+    nextPage: 1,
+    total: 0,
+  })
+
+  const { data, fetchMore } = useGetContacts({
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+    onCompleted(data) {
+      if (data.contact.length === LIMIT && pagination.initial) {
+        setPagination((p) => ({
+          ...p,
+          initial: false,
+          nextPage: p.nextPage + 1,
+          hasNextPage: true,
+          total: data.contact.length,
+        }))
+      }
+    },
+  })
+
+  const { ref, inView } = useInView({
+    onChange: async (inView) => {
+      if (inView && pagination.hasNextPage) {
+        const data = await fetchMore(pagination.nextPage)
+
+        if (data.contact.length === LIMIT) {
+          setPagination((p) => ({
+            ...p,
+            initial: false,
+            nextPage: p.nextPage + 1,
+            hasNextPage: true,
+            total: p.total + data.contact.length,
+          }))
+        } else {
+          setPagination((p) => ({ ...p, hasNextPage: false }))
+        }
+      }
+    },
+  })
+
   const favourites = []
 
   return (
@@ -87,6 +134,22 @@ export default function Home() {
               </ContactItemContent>
             </ContactItem>
           ))}
+          <div ref={ref}>
+            {inView && pagination.hasNextPage ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '1rem',
+                  justifyContent: 'center',
+                }}
+              >
+                <Loader color={slate.slate11} />
+              </div>
+            ) : (
+              <div />
+            )}
+          </div>
         </ContactList>
       </ContactContainer>
     </Main>

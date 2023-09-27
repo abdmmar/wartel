@@ -1,9 +1,9 @@
-import { graphql } from "@/gql";
-import { GetContactsQuery, GetContactsQueryVariables, Order_By } from "@/gql/graphql";
-import { QueryHookOptions, useQuery } from "@apollo/client";
+import { graphql } from '@/gql'
+import { GetContactsQuery, GetContactsQueryVariables, Order_By } from '@/gql/graphql'
+import { QueryHookOptions, useQuery } from '@apollo/client'
 
 export const getContactsQueryKey = 'GetContacts'
-const getContacts = graphql(`
+const GET_CONTACTS_QUERY = graphql(`
   query GetContacts(
     $distinct_on: [contact_select_column!]
     $limit: Int
@@ -34,14 +34,15 @@ export type GetContactsQueryOptions = QueryHookOptions<GetContactsQuery, GetCont
 export const useGetContactsQuery = (option?: GetContactsQueryOptions) => {
   const { variables, ...options } = option || {}
 
-  const result = useQuery(getContacts, {
+  const result = useQuery(GET_CONTACTS_QUERY, {
     variables: {
+      limit: 10,
       order_by: {
         created_at: Order_By.Desc,
       },
-      ...variables
+      ...variables,
     },
-    ...options
+    ...options,
   })
 
   return result
