@@ -1,10 +1,11 @@
+import { PAGINATION_DEFAULT_VALUE } from '@/constants'
 import {
   CreateContactMutationOptions,
   getContactsQueryKey,
   useCreateContactMutation
 } from '@/data/contact'
 import { CreateContactMutationVariables } from '@/gql/graphql'
-import { PaginationDefaultValue, getContactsPaginationVar } from '@/services/contact'
+import { getContactsPaginationVar } from '@/services/contact'
 
 export const useCreateContact = (options?: CreateContactMutationOptions) => {
   const [mutate, rest] = useCreateContactMutation(options)
@@ -17,7 +18,7 @@ export const useCreateContact = (options?: CreateContactMutationOptions) => {
       })
 
       if (result.data) {
-        getContactsPaginationVar(PaginationDefaultValue)
+        getContactsPaginationVar(PAGINATION_DEFAULT_VALUE)
       }
 
       return result

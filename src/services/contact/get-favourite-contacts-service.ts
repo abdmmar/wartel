@@ -1,23 +1,24 @@
+import { PAGINATION_DEFAULT_VALUE, PAGINATION_LIMIT } from '@/constants'
 import { GetContactsQueryOptions, useGetContactsQuery } from '@/data/contact'
 import { Order_By } from '@/gql/graphql'
 import { makeVar, useReactiveVar } from '@apollo/client'
 
-const LIMIT = 10
-export const PaginationDefaultValue = {
-  initial: true,
-  hasNextPage: false,
-  nextPage: 1,
-  total: 0,
-}
-export const getContactsPaginationVar = makeVar(PaginationDefaultValue)
+export const getFavContactsPaginationVar = makeVar(PAGINATION_DEFAULT_VALUE)
 
-export const useGetContacts = (options?: GetContactsQueryOptions) => {
-  const pagination = useReactiveVar(getContactsPaginationVar);
+export const useGetFavouriteContacts = (options?: GetContactsQueryOptions) => {
+  const pagination = useReactiveVar(getFavContactsPaginationVar);
 
   const { data, loading, fetchMore: fetchMore_, ...rest } = useGetContactsQuery({
-    ...options, onCompleted(data) {
-      if (data.contact.length === LIMIT && pagination.initial) {
-        getContactsPaginationVar({
+    variables: {
+      where: {
+        id: {
+          _in: []
+        }
+      }
+    },
+    onCompleted(data) {
+      if (data.contact.length === PAGINATION_LIMIT && pagination.initial) {
+        getFavContactsPaginationVar({
           initial: false,
           nextPage: 1,
           hasNextPage: true,
@@ -25,27 +26,28 @@ export const useGetContacts = (options?: GetContactsQueryOptions) => {
         })
       }
     },
+    ...options
   })
 
   const fetchMore = async (next: number) => {
     const result = await fetchMore_({
       variables: {
-        offset: next * LIMIT,
+        offset: next * PAGINATION_LIMIT,
         order_by: {
           created_at: Order_By.Desc,
         },
       },
     })
 
-    if (result.data.contact.length === LIMIT) {
-      getContactsPaginationVar({
+    if (result.data.contact.length === PAGINATION_LIMIT) {
+      getFavContactsPaginationVar({
         initial: false,
         nextPage: pagination.nextPage + 1,
         hasNextPage: true,
         total: pagination.total + result.data.contact.length,
       })
     } else {
-      getContactsPaginationVar({
+      getFavContactsPaginationVar({
         ...pagination,
         hasNextPage: false
       })
