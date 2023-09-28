@@ -1,5 +1,5 @@
-import emptyContacts from '@/assets/empty-contacts.png'
-import emptyFavouritesContact from '@/assets/empty-favourites-contact.png'
+import emptyContacts from '@/assets/empty-contacts.webp'
+import emptyFavouritesContact from '@/assets/empty-favourites-contact.webp'
 import styled from '@emotion/styled'
 import { slate } from '@radix-ui/colors'
 import Image from 'next/image'

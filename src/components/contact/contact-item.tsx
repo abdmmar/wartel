@@ -47,7 +47,7 @@ export const Contact = ({ contact, onClickFavourite, onClickDelete }: ContactPro
             onClickDelete={toggleDelete}
             onClickFavourite={onClickFavourite}
           >
-            <Button size="icon" variant="ghost">
+            <Button size="icon" variant="ghost" aria-label="Contact menu">
               <HiDotsVertical />
             </Button>
           </ContactItemMenu>
