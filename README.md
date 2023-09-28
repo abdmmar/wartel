@@ -38,6 +38,7 @@ This project comes with several scripts to assist with development and testing:
 - `pnpm lint`: Run linting checks.
 - `pnpm test`: Run Jest tests.
 - `pnpm codegen`: Generate GraphQL type definitions using `graphql-codegen`.
+- `pnpm analyze`: Analyze bundle size.
 
 ## Dependencies
 
