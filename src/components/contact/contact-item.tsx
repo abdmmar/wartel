@@ -2,9 +2,9 @@ import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { jade, slate } from '@radix-ui/colors'
+import { jade, slate, yellow } from '@radix-ui/colors'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { HiOutlineStar } from 'react-icons/hi'
+import { HiOutlineStar, HiStar } from 'react-icons/hi'
 
 type ContactProps = {
   contact: {
@@ -29,7 +29,11 @@ export const Contact = ({ contact }: ContactProps) => {
           <ContactItemInfoPhoneNumber>{contact.phones[0].number}</ContactItemInfoPhoneNumber>
         </ContactItemInfo>
         <Button size="icon" variant="ghost">
-          <HiOutlineStar style={{ width: '1rem', height: '1rem', color: slate.slate10 }} />
+          {contact.isFavourite ? (
+            <HiStar style={{ width: '1.2rem', height: '1.2rem', color: yellow.yellow10 }} />
+          ) : (
+            <HiOutlineStar style={{ width: '1rem', height: '1rem', color: slate.slate10 }} />
+          )}
         </Button>
         {/* <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
