@@ -4,7 +4,13 @@ import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { jade, slate, yellow } from '@radix-ui/colors'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { HiOutlineStar, HiStar } from 'react-icons/hi'
+import {
+  HiDotsVertical,
+  HiOutlinePencil,
+  HiOutlineStar,
+  HiOutlineTrash,
+  HiStar,
+} from 'react-icons/hi'
 
 type ContactProps = {
   contact: {
@@ -29,14 +35,7 @@ export const Contact = ({ contact, onClickFavourite }: ContactProps) => {
           <ContactItemInfoName>{name}</ContactItemInfoName>
           <ContactItemInfoPhoneNumber>{contact.phones[0].number}</ContactItemInfoPhoneNumber>
         </ContactItemInfo>
-        <Button size="icon" variant="ghost" onClick={() => onClickFavourite(contact.id)}>
-          {contact.isFavourite ? (
-            <HiStar style={{ width: '1.2rem', height: '1.2rem', color: yellow.yellow10 }} />
-          ) : (
-            <HiOutlineStar style={{ width: '1rem', height: '1rem', color: slate.slate10 }} />
-          )}
-        </Button>
-        {/* <DropdownMenu.Root>
+        <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <Button size="icon" variant="ghost">
               <HiDotsVertical />
@@ -46,18 +45,29 @@ export const Contact = ({ contact, onClickFavourite }: ContactProps) => {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
                 <DropdownMenuItemContent>
-                  <HiOutlinePencil style={{ width: '1.2rem', height: '1rem' }} /> <span>Edit</span>
+                  <HiOutlinePencil style={{ width: '1rem', height: '1rem' }} /> <span>Edit</span>
                 </DropdownMenuItemContent>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <DropdownMenuItemContent>
-                  <HiStar style={{ width: '1.2rem', height: '1.2rem', color: yellow.yellow10 }} />{' '}
-                  <span>Favourite</span>
+                  <HiOutlineTrash style={{ width: '1rem', height: '1rem' }} /> <span>Remove</span>
+                </DropdownMenuItemContent>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onClickFavourite(contact.id)}>
+                <DropdownMenuItemContent>
+                  {contact.isFavourite ? (
+                    <HiOutlineStar
+                      style={{ width: '1rem', height: '1rem', color: slate.slate10 }}
+                    />
+                  ) : (
+                    <HiStar style={{ width: '1rem', height: '1rem', color: yellow.yellow10 }} />
+                  )}
+                  <span>{contact.isFavourite ? 'Unfavourite' : 'Favourite'}</span>
                 </DropdownMenuItemContent>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu.Portal>
-        </DropdownMenu.Root> */}
+        </DropdownMenu.Root>
       </ContactItemContent>
     </ContactItem>
   )
