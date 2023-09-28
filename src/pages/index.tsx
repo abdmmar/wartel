@@ -54,7 +54,12 @@ export default function Home() {
         </HeaderAction>
       </Header>
       <ContactContainer>
-        <ContactContainerTitle>Favourites</ContactContainerTitle>
+        <ContactContainerHeader>
+          <ContactContainerTitle>Favourites</ContactContainerTitle>
+          <ContactContainerCount>
+            {favouriteContacts.data?.contact.length || 0}
+          </ContactContainerCount>
+        </ContactContainerHeader>
         {favouriteContacts.data?.contact.length === 0 ? <EmptyFavouritesContact /> : null}
         {favouriteContacts.loading === true ? (
           <Spinner>
@@ -75,7 +80,10 @@ export default function Home() {
         </ContactList>
       </ContactContainer>
       <ContactContainer>
-        <ContactContainerTitle>All Contacts</ContactContainerTitle>
+        <ContactContainerHeader>
+          <ContactContainerTitle>All Contacts</ContactContainerTitle>
+          <ContactContainerCount>{allContacts.data?.contact.length || 0}</ContactContainerCount>
+        </ContactContainerHeader>
         {allContacts.data?.contact.length === 0 ? <EmptyContacts /> : null}
         {allContacts.loading === true ? (
           <Spinner>
@@ -130,9 +138,25 @@ const ContactContainer = styled.div`
     margin-bottom: 0;
   }
 `
+const ContactContainerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`
 const ContactContainerTitle = styled.h2`
   font-size: 1rem;
-  margin-bottom: 1rem;
+`
+const ContactContainerCount = styled.div`
+  padding: 2px 4px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  min-width: 22px;
+  background-color: ${slate.slate3};
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 2px;
+  color: ${slate.slate11};
 `
 const ContactList = styled.ul`
   display: flex;
