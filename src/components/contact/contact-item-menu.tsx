@@ -2,6 +2,7 @@ import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { jade, slate, yellow } from '@radix-ui/colors'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import NextLink from 'next/link'
 import { HiOutlinePencil, HiOutlineStar, HiOutlineTrash, HiStar } from 'react-icons/hi'
 
 type ContactItemMenuProps = {
@@ -29,9 +30,11 @@ export const ContactItemMenu = ({
       <DropdownMenu.Portal>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <DropdownMenuItemContent>
-              <HiOutlinePencil style={{ width: '1rem', height: '1rem' }} /> <span>Edit</span>
-            </DropdownMenuItemContent>
+            <Link href={`/form/${contact.id}`}>
+              <DropdownMenuItemContent>
+                <HiOutlinePencil style={{ width: '1rem', height: '1rem' }} /> <span>Edit</span>
+              </DropdownMenuItemContent>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => onClickDelete(contact.id)}>
             <DropdownMenuItemContent>
@@ -121,4 +124,11 @@ const DropdownMenuItemContent = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+`
+const Link = styled(NextLink)`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: ${slate.slate11};
+  text-decoration: none;
 `

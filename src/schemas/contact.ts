@@ -9,3 +9,10 @@ export const addContactSchema = z.object({
 })
 
 export type AddContactSchema = z.infer<typeof addContactSchema>
+
+export const editContactSchema = z.object({
+  first_name: z.string({ required_error: 'Please enter the first name of the contact' }).nonempty({ message: 'Please enter the first name of the contact' }),
+  last_name: z.string({ required_error: 'Please enter the last name of the contact' }).nonempty({ message: 'Please enter the last name of the contact' }),
+})
+
+export type EditContactSchema = z.infer<typeof editContactSchema>
