@@ -1,5 +1,15 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { useToggle } from '@/hooks/useToggle'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { jade, slate, yellow } from '@radix-ui/colors'
@@ -21,55 +31,79 @@ type ContactProps = {
     isFavourite: boolean
   }
   onClickFavourite: (favouriteId: number) => void
+  onClickDelete: (id: number) => void
 }
 
-export const Contact = ({ contact, onClickFavourite }: ContactProps) => {
+export const Contact = ({ contact, onClickFavourite, onClickDelete }: ContactProps) => {
+  const [openDelete, toggleDelete] = useToggle()
+
   const name = `${contact.first_name} ${contact.last_name}`
   const initialName = `${contact.first_name[0].toUpperCase()}${contact.last_name[0].toUpperCase()}`
 
   return (
-    <ContactItem key={contact.id}>
-      <Avatar name={name}>{initialName}</Avatar>
-      <ContactItemContent>
-        <ContactItemInfo>
-          <ContactItemInfoName>{name}</ContactItemInfoName>
-          <ContactItemInfoPhoneNumber>{contact.phones[0].number}</ContactItemInfoPhoneNumber>
-        </ContactItemInfo>
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
-            <Button size="icon" variant="ghost">
-              <HiDotsVertical />
-            </Button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Portal>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <DropdownMenuItemContent>
-                  <HiOutlinePencil style={{ width: '1rem', height: '1rem' }} /> <span>Edit</span>
-                </DropdownMenuItemContent>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <DropdownMenuItemContent>
-                  <HiOutlineTrash style={{ width: '1rem', height: '1rem' }} /> <span>Remove</span>
-                </DropdownMenuItemContent>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onClickFavourite(contact.id)}>
-                <DropdownMenuItemContent>
-                  {contact.isFavourite ? (
-                    <HiOutlineStar
-                      style={{ width: '1rem', height: '1rem', color: slate.slate10 }}
-                    />
-                  ) : (
-                    <HiStar style={{ width: '1rem', height: '1rem', color: yellow.yellow10 }} />
-                  )}
-                  <span>{contact.isFavourite ? 'Unfavourite' : 'Favourite'}</span>
-                </DropdownMenuItemContent>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
-      </ContactItemContent>
-    </ContactItem>
+    <>
+      <ContactItem key={contact.id}>
+        <Avatar name={name}>{initialName}</Avatar>
+        <ContactItemContent>
+          <ContactItemInfo>
+            <ContactItemInfoName>{name}</ContactItemInfoName>
+            <ContactItemInfoPhoneNumber>{contact.phones[0]?.number}</ContactItemInfoPhoneNumber>
+          </ContactItemInfo>
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger asChild>
+              <Button size="icon" variant="ghost">
+                <HiDotsVertical />
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Portal>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <DropdownMenuItemContent>
+                    <HiOutlinePencil style={{ width: '1rem', height: '1rem' }} /> <span>Edit</span>
+                  </DropdownMenuItemContent>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={toggleDelete}>
+                  <DropdownMenuItemContent>
+                    <HiOutlineTrash style={{ width: '1rem', height: '1rem' }} /> <span>Remove</span>
+                  </DropdownMenuItemContent>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onClickFavourite(contact.id)}>
+                  <DropdownMenuItemContent>
+                    {contact.isFavourite ? (
+                      <HiOutlineStar
+                        style={{ width: '1rem', height: '1rem', color: slate.slate10 }}
+                      />
+                    ) : (
+                      <HiStar style={{ width: '1rem', height: '1rem', color: yellow.yellow10 }} />
+                    )}
+                    <span>{contact.isFavourite ? 'Unfavourite' : 'Favourite'}</span>
+                  </DropdownMenuItemContent>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu.Portal>
+          </DropdownMenu.Root>
+        </ContactItemContent>
+      </ContactItem>
+      <AlertDialog open={openDelete} onOpenChange={toggleDelete}>
+        <AlertDialogContent>
+          <AlertDialogTitle>Remove Contact</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to remove this contact from your list? This action cannot be
+            undone.
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button>Cancel</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button variant="destructive" onClick={() => onClickDelete(contact.id)}>
+                Yes, Remove
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }
 

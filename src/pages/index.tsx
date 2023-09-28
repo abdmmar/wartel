@@ -2,8 +2,7 @@ import { Contact } from '@/components/contact/contact-item'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/loader'
-import { useToggle } from '@/hooks/useToggle'
-import { useGetContacts } from '@/services/contact'
+import { useDeleteContact, useGetContacts } from '@/services/contact'
 import { useAddFavouriteContact } from '@/services/contact/add-favourite-contact-service'
 import { useGetFavouriteContacts } from '@/services/contact/get-favourite-contacts-service'
 import styled from '@emotion/styled'
@@ -21,8 +20,6 @@ const EmptyFavouritesContact = dynamic(() =>
 )
 
 export default function Home() {
-  const [open, toggle] = useToggle()
-
   const favouriteContacts = useGetFavouriteContacts({
     notifyOnNetworkStatusChange: true,
   })
@@ -30,7 +27,7 @@ export default function Home() {
     notifyOnNetworkStatusChange: true,
   })
   const { addFavouriteContact, removeFavouriteContact } = useAddFavouriteContact()
-
+  const { deleteContact } = useDeleteContact()
   const { ref, inView } = useInView({
     onChange: async (inView) => {
       if (inView && allContacts.pagination.hasNextPage) {
@@ -71,6 +68,7 @@ export default function Home() {
               key={contact.id}
               contact={{ ...contact, isFavourite: true }}
               onClickFavourite={removeFavouriteContact}
+              onClickDelete={deleteContact}
             />
           ))}
           <div ref={ref}>
@@ -95,6 +93,7 @@ export default function Home() {
               key={contact.id}
               contact={{ ...contact, isFavourite: false }}
               onClickFavourite={addFavouriteContact}
+              onClickDelete={deleteContact}
             />
           ))}
           <div ref={ref}>
