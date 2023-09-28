@@ -1,40 +1,80 @@
 # Wartel
 
+## Overview
+
+A phone book application built with modern web technologies
+
 ## Getting Started
 
-First, run the development server:
+To get this project up and running on your local environment, follow these steps:
+
+Clone the repository:
 
 ```bash
-pnpm i && pnpm dev
+git clone https://github.com/abdmmar/wartel.git
+cd wartel
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Phone Book App (wartel)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Overview
 
-## Features
+This is the README for the **wartel** (short for "phone book") project, version 0.1.0. This project is a phone book application built with modern web technologies. As a frontend engineer and expert, you'll find this README concise but comprehensive.
 
-### Favourite
+## Table of Contents
 
-- get favourite contacts
+- [Wartel](#wartel)
+  - [Overview](#overview)
+  - [Getting Started](#getting-started)
+- [Phone Book App (wartel)](#phone-book-app-wartel)
+  - [Overview](#overview-1)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started-1)
+  - [Scripts](#scripts)
+  - [Dependencies](#dependencies)
 
-  - use variables: {where: {id: \_in: []}}
+## Getting Started
 
-- add contact to favourites
+To get this project up and running on your local environment, follow these steps:
 
-  - read, filter, then persist the favourite contacts id using reactive variable
-  - invalidate using specific variable / both (easies)
+1. Clone the repository:
 
-- delete favourite contact
+   ```bash
+   git clone <repository-url>
+   cd wartel
+   ```
 
-  - delete contact to server
-  - invalidate both all and favourite contacts
+2. Install the required dependencies:
 
-- edit favourite contact
+   ```bash
+   pnpm install
+   ```
 
-  - edit contact to server
-  - invalidate using specific variable / both (easies)
+3. Start the development server:
 
-- unfavourite contact
-  - read, filter, then persist the favourite contacts id using reactive variable
-  - invalidate using specific variable / both (easies)
+   ```bash
+   pnpm dev
+   ```
+
+4. Open your web browser and access the application at [http://localhost:3000](http://localhost:3000).
+
+## Scripts
+
+This project comes with several scripts to assist with development and testing:
+
+- `pnpm dev`: Start the development server using Next.js.
+- `pnpm build`: Build the project for production.
+- `pnpm lint`: Run linting checks.
+- `pnpm test`: Run Jest tests.
+- `pnpm codegen`: Generate GraphQL type definitions using `graphql-codegen`.
+
+## Dependencies
+
+Here are the key dependencies used in this project:
+
+- Apollo Client for GraphQL.
+- Emotion for styling.
+- React Hook Form for form handling.
+- Radix UI for components.
+- Intersection Observer for pagination.
+- Zod for validation.

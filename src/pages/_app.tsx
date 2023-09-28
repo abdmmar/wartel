@@ -16,8 +16,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Phone Book</title>
-        <meta name="description" content="Phone book applications" />
+        <title>Wartel - Warung Telepon Portabel</title>
+        <meta name="description" content="Warung telepon portabel berbasis aplikasi web" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

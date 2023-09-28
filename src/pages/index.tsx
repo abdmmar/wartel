@@ -73,7 +73,7 @@ export default function Home() {
   return (
     <Main>
       <Header>
-        <H1>Phone</H1>
+        <H1>Wartel</H1>
 
         <HeaderAction>
           <Input placeholder="Search contact" onChange={onSearch} />
