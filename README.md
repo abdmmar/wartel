@@ -8,35 +8,6 @@ A phone book application built with modern web technologies
 
 To get this project up and running on your local environment, follow these steps:
 
-Clone the repository:
-
-```bash
-git clone https://github.com/abdmmar/wartel.git
-cd wartel
-```
-
-# Phone Book App (wartel)
-
-## Overview
-
-This is the README for the **wartel** (short for "phone book") project, version 0.1.0. This project is a phone book application built with modern web technologies. As a frontend engineer and expert, you'll find this README concise but comprehensive.
-
-## Table of Contents
-
-- [Wartel](#wartel)
-  - [Overview](#overview)
-  - [Getting Started](#getting-started)
-- [Phone Book App (wartel)](#phone-book-app-wartel)
-  - [Overview](#overview-1)
-  - [Table of Contents](#table-of-contents)
-  - [Getting Started](#getting-started-1)
-  - [Scripts](#scripts)
-  - [Dependencies](#dependencies)
-
-## Getting Started
-
-To get this project up and running on your local environment, follow these steps:
-
 1. Clone the repository:
 
    ```bash
