@@ -38,7 +38,9 @@ export const Contact = ({ contact, onClickFavourite, onClickDelete }: ContactPro
   const [openDelete, toggleDelete] = useToggle()
 
   const name = `${contact.first_name} ${contact.last_name}`
-  const initialName = `${contact.first_name[0].toUpperCase()}${contact.last_name[0].toUpperCase()}`
+  const initialName = `${contact.first_name[0]?.toUpperCase() || 'A'}${
+    contact.last_name[0]?.toUpperCase() || 'A'
+  }`
 
   return (
     <>
