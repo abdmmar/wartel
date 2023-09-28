@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { jade, slate } from '@radix-ui/colors'
+import { jade, red, slate } from '@radix-ui/colors'
 import { Slot } from '@radix-ui/react-slot'
 import * as React from 'react'
 
@@ -60,6 +60,22 @@ const buttonStyles = css`
     }
   }
 
+  &.destructive {
+    background-color: ${red.red11};
+    color: ${slate.slate1};
+
+    :focus-visible {
+      border: 1px solid;
+      outline: none;
+      border-color: ${red.red12};
+      box-shadow: 0 0 0 0.125rem ${red.red3};
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
   &.sm {
     height: 2rem;
     font-size: 0.75rem;
@@ -86,6 +102,7 @@ const buttonStyles = css`
 const styleVariant = {
   ghost: 'ghost',
   primary: 'primary',
+  destructive: 'destructive',
 }
 
 const sizeVariant = {
