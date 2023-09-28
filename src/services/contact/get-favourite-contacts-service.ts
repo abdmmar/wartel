@@ -7,6 +7,9 @@ import { makeVar, useReactiveVar } from '@apollo/client'
 export const getFavContactsPaginationVar = makeVar(PAGINATION_DEFAULT_VALUE)
 
 export const useGetFavouriteContacts = (options?: GetContactsQueryOptions) => {
+  const { variables, ...opt } = options || {}
+  const { where, ...vars } = variables || {}
+
   const pagination = useReactiveVar(getFavContactsPaginationVar);
   const favouriteContacts = useReactiveVar(favouriteContactsVar)
 
@@ -15,11 +18,13 @@ export const useGetFavouriteContacts = (options?: GetContactsQueryOptions) => {
       where: {
         id: {
           _in: favouriteContacts
-        }
-      }
+        },
+        ...where
+      },
+      ...vars
     },
     onCompleted(data) {
-      if (data.contact.length === PAGINATION_LIMIT && pagination.initial) {
+      if (data.contact.length >= PAGINATION_LIMIT && pagination.initial) {
         getFavContactsPaginationVar({
           initial: false,
           nextPage: 1,
@@ -28,7 +33,7 @@ export const useGetFavouriteContacts = (options?: GetContactsQueryOptions) => {
         })
       }
     },
-    ...options
+    ...opt
   })
 
   const fetchMore = async (next: number) => {

@@ -2,6 +2,7 @@ import { Contact } from '@/components/contact/contact-item'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/loader'
+import { useDebounce } from '@/hooks/useDebounce'
 import { useDeleteContact, useGetContacts } from '@/services/contact'
 import { useAddFavouriteContact } from '@/services/contact/add-favourite-contact-service'
 import { useGetFavouriteContacts } from '@/services/contact/get-favourite-contacts-service'
@@ -9,6 +10,7 @@ import styled from '@emotion/styled'
 import { jade, slate } from '@radix-ui/colors'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import * as React from 'react'
 import { HiPlus } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
 
@@ -20,18 +22,50 @@ const EmptyFavouritesContact = dynamic(() =>
 )
 
 export default function Home() {
+  const [s, setSearch] = React.useState('')
+  const search = useDebounce(s, 500)
+
   const favouriteContacts = useGetFavouriteContacts({
     notifyOnNetworkStatusChange: true,
+    initialFetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+    variables: {
+      where: {
+        _or: [{ first_name: { _ilike: `%${search}%` } }, { last_name: { _ilike: `%${search}%` } }],
+      },
+      offset: search ? 0 : undefined,
+    },
   })
   const allContacts = useGetContacts({
     notifyOnNetworkStatusChange: true,
+    initialFetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+    variables: {
+      where: {
+        _or: [{ first_name: { _ilike: `%${search}%` } }, { last_name: { _ilike: `%${search}%` } }],
+      },
+      offset: search ? 0 : undefined,
+    },
   })
   const { addFavouriteContact, removeFavouriteContact } = useAddFavouriteContact()
   const { deleteContact } = useDeleteContact()
-  const { ref, inView } = useInView({
+
+  const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value)
+  }
+
+  const contactsObserver = useInView({
     onChange: async (inView) => {
       if (inView && allContacts.pagination.hasNextPage) {
         await allContacts.fetchMore(allContacts.pagination.nextPage)
+      }
+    },
+  })
+
+  const favouriteObserver = useInView({
+    onChange: async (inView) => {
+      if (inView && favouriteContacts.pagination.hasNextPage) {
+        await favouriteContacts.fetchMore(favouriteContacts.pagination.nextPage)
       }
     },
   })
@@ -40,8 +74,9 @@ export default function Home() {
     <Main>
       <Header>
         <H1>Phone</H1>
+
         <HeaderAction>
-          <Input placeholder="Search contact" />
+          <Input placeholder="Search contact" onChange={onSearch} />
           <Button asChild size="icon">
             <Link href="/form">
               <HiPlus style={{ width: '1rem', height: '1rem', color: jade.jade11 }} />
@@ -71,8 +106,12 @@ export default function Home() {
               onClickDelete={deleteContact}
             />
           ))}
-          <div ref={ref}>
-            {inView && favouriteContacts.pagination.hasNextPage ? <Spinner /> : <div />}
+          <div ref={favouriteObserver.ref}>
+            {favouriteObserver.inView && favouriteContacts.pagination.hasNextPage ? (
+              <Spinner />
+            ) : (
+              <div />
+            )}
           </div>
         </ContactList>
       </ContactContainer>
@@ -96,8 +135,8 @@ export default function Home() {
               onClickDelete={deleteContact}
             />
           ))}
-          <div ref={ref}>
-            {inView && allContacts.pagination.hasNextPage ? <Spinner /> : <div />}
+          <div ref={contactsObserver.ref}>
+            {contactsObserver.inView && allContacts.pagination.hasNextPage ? <Spinner /> : <div />}
           </div>
         </ContactList>
       </ContactContainer>
