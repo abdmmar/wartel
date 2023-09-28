@@ -7,7 +7,7 @@ import Image from 'next/image'
 export const EmptyContacts = () => {
   return (
     <EmptyContainer>
-      <Image src={emptyContacts} alt="A person confused" width={200} height={200} />
+      <Image priority src={emptyContacts} alt="A person confused" width={200} height={200} />
       <EmptyDescription>
         Your All Contacts list is empty.
         <br /> Add new contacts to keep your contact list organized.
@@ -19,7 +19,13 @@ export const EmptyContacts = () => {
 export const EmptyFavouritesContact = () => {
   return (
     <EmptyContainer>
-      <Image src={emptyFavouritesContact} alt="A person confused" width={200} height={200} />
+      <Image
+        priority
+        src={emptyFavouritesContact}
+        alt="A person confused"
+        width={200}
+        height={200}
+      />
       <EmptyDescription>
         Favorites list is empty.
         <br /> Add contacts to access them quickly!

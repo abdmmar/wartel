@@ -6,7 +6,7 @@ export const makePersistedVar = <T>(initialValue: T, storageName: string): React
   let value = initialValue;
 
   // Try to fetch the value from local storage
-  const previousValue = localStorage.getItem(storageName);
+  const previousValue = typeof document === 'undefined' ? null : localStorage?.getItem(storageName)
   if (previousValue !== null) {
     try {
       const parsed = JSON.parse(previousValue);
@@ -37,7 +37,7 @@ export const makePersistedVar = <T>(initialValue: T, storageName: string): React
   };
 
   // Register for the first change
-  rv.onNextChange(onNextChange);
+  rv.onNextChange(onNextChange)
 
   return rv;
 };

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/loader'
 import { useToggle } from '@/hooks/useToggle'
 import { useGetContacts } from '@/services/contact'
+import { useAddFavouriteContact } from '@/services/contact/add-favourite-contact-service'
 import { useGetFavouriteContacts } from '@/services/contact/get-favourite-contacts-service'
 import styled from '@emotion/styled'
 import { jade, slate } from '@radix-ui/colors'
@@ -24,10 +25,13 @@ const AddContactDialog = dynamic(() =>
 export default function Home() {
   const [open, toggle] = useToggle()
 
-  const favouriteContacts = useGetFavouriteContacts()
+  const favouriteContacts = useGetFavouriteContacts({
+    notifyOnNetworkStatusChange: true,
+  })
   const allContacts = useGetContacts({
     notifyOnNetworkStatusChange: true,
   })
+  const { addFavouriteContact, removeFavouriteContact } = useAddFavouriteContact()
 
   const { ref, inView } = useInView({
     onChange: async (inView) => {
@@ -59,7 +63,11 @@ export default function Home() {
         ) : null}
         <ContactList>
           {favouriteContacts.data?.contact.map((contact) => (
-            <Contact contact={{ ...contact, isFavourite: true }} />
+            <Contact
+              key={contact.id}
+              contact={{ ...contact, isFavourite: true }}
+              onClickFavourite={removeFavouriteContact}
+            />
           ))}
           <div ref={ref}>
             {inView && favouriteContacts.pagination.hasNextPage ? <Spinner /> : <div />}
@@ -76,7 +84,11 @@ export default function Home() {
         ) : null}
         <ContactList>
           {allContacts.data?.contact.map((contact) => (
-            <Contact contact={{ ...contact, isFavourite: false }} />
+            <Contact
+              key={contact.id}
+              contact={{ ...contact, isFavourite: false }}
+              onClickFavourite={addFavouriteContact}
+            />
           ))}
           <div ref={ref}>
             {inView && allContacts.pagination.hasNextPage ? <Spinner /> : <div />}

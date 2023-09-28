@@ -1,15 +1,26 @@
 import { PAGINATION_DEFAULT_VALUE, PAGINATION_LIMIT } from '@/constants'
 import { GetContactsQueryOptions, useGetContactsQuery } from '@/data/contact'
 import { Order_By } from '@/gql/graphql'
+import { favouriteContactsVar } from '@/services/contact/add-favourite-contact-service'
 import { makeVar, useReactiveVar } from '@apollo/client'
 
 export const getContactsPaginationVar = makeVar(PAGINATION_DEFAULT_VALUE)
 
 export const useGetContacts = (options?: GetContactsQueryOptions) => {
   const pagination = useReactiveVar(getContactsPaginationVar);
+  const favouriteContacts = useReactiveVar(favouriteContactsVar)
 
   const { data, loading, fetchMore: fetchMore_, ...rest } = useGetContactsQuery({
-    ...options, onCompleted(data) {
+    variables: {
+      where: {
+        _not: {
+          id: {
+            _in: favouriteContacts
+          }
+        }
+      }
+    },
+    onCompleted(data) {
       if (data.contact.length === PAGINATION_LIMIT && pagination.initial) {
         getContactsPaginationVar({
           initial: false,
@@ -19,6 +30,7 @@ export const useGetContacts = (options?: GetContactsQueryOptions) => {
         })
       }
     },
+    ...options,
   })
 
   const fetchMore = async (next: number) => {

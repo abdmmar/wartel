@@ -14,9 +14,10 @@ type ContactProps = {
     phones: Array<{ number: string }>
     isFavourite: boolean
   }
+  onClickFavourite: (favouriteId: number) => void
 }
 
-export const Contact = ({ contact }: ContactProps) => {
+export const Contact = ({ contact, onClickFavourite }: ContactProps) => {
   const name = `${contact.first_name} ${contact.last_name}`
   const initialName = `${contact.first_name[0].toUpperCase()}${contact.last_name[0].toUpperCase()}`
 
@@ -28,7 +29,7 @@ export const Contact = ({ contact }: ContactProps) => {
           <ContactItemInfoName>{name}</ContactItemInfoName>
           <ContactItemInfoPhoneNumber>{contact.phones[0].number}</ContactItemInfoPhoneNumber>
         </ContactItemInfo>
-        <Button size="icon" variant="ghost">
+        <Button size="icon" variant="ghost" onClick={() => onClickFavourite(contact.id)}>
           {contact.isFavourite ? (
             <HiStar style={{ width: '1.2rem', height: '1.2rem', color: yellow.yellow10 }} />
           ) : (
