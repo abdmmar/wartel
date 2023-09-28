@@ -1,5 +1,7 @@
 import * as z from "zod";
 
+export const ALPHANUMERIC_REGEX = /[^a-zA-Z0-9 ]/g
+
 export const addContactSchema = z.object({
   first_name: z.string({ required_error: 'Please enter the first name of the contact' }).nonempty({ message: 'Please enter the first name of the contact' }),
   last_name: z.string({ required_error: 'Please enter the last name of the contact' }).nonempty({ message: 'Please enter the last name of the contact' }),
