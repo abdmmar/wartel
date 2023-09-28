@@ -11,7 +11,7 @@ To get this project up and running on your local environment, follow these steps
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/abdmmar/wartel.git
    cd wartel
    ```
 
