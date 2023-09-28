@@ -78,7 +78,7 @@ export default function Home() {
         <HeaderAction>
           <Input placeholder="Search contact" onChange={onSearch} />
           <Button asChild size="icon">
-            <Link href="/form">
+            <Link href="/form" aria-label="Add new contact">
               <HiPlus style={{ width: '1rem', height: '1rem', color: jade.jade11 }} />
             </Link>
           </Button>
@@ -106,13 +106,13 @@ export default function Home() {
               onClickDelete={deleteContact}
             />
           ))}
-          <div ref={favouriteObserver.ref}>
+          <li ref={favouriteObserver.ref}>
             {favouriteObserver.inView && favouriteContacts.pagination.hasNextPage ? (
               <Spinner />
             ) : (
               <div />
             )}
-          </div>
+          </li>
         </ContactList>
       </ContactContainer>
       <ContactContainer>
@@ -135,9 +135,9 @@ export default function Home() {
               onClickDelete={deleteContact}
             />
           ))}
-          <div ref={contactsObserver.ref}>
+          <li ref={contactsObserver.ref}>
             {contactsObserver.inView && allContacts.pagination.hasNextPage ? <Spinner /> : <div />}
-          </div>
+          </li>
         </ContactList>
       </ContactContainer>
     </Main>
