@@ -9,6 +9,7 @@ import { useGetFavouriteContacts } from '@/services/contact/get-favourite-contac
 import styled from '@emotion/styled'
 import { jade, slate } from '@radix-ui/colors'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { HiPlus } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
 
@@ -17,9 +18,6 @@ const EmptyContacts = dynamic(() =>
 )
 const EmptyFavouritesContact = dynamic(() =>
   import('@/components/ui/empty-state').then((c) => c.EmptyFavouritesContact),
-)
-const AddContactDialog = dynamic(() =>
-  import('@/components/contact/add-contact-dialog').then((c) => c.AddContactDialog),
 )
 
 export default function Home() {
@@ -47,10 +45,11 @@ export default function Home() {
         <H1>Phone</H1>
         <HeaderAction>
           <Input placeholder="Search contact" />
-          <Button size="icon" onClick={toggle}>
-            <HiPlus style={{ width: '1rem', height: '1rem', color: jade.jade11 }} />
+          <Button asChild size="icon">
+            <Link href="/form">
+              <HiPlus style={{ width: '1rem', height: '1rem', color: jade.jade11 }} />
+            </Link>
           </Button>
-          {open && <AddContactDialog open={open} onOpenChange={toggle} />}
         </HeaderAction>
       </Header>
       <ContactContainer>

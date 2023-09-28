@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { jade, slate } from '@radix-ui/colors'
+import { Slot } from '@radix-ui/react-slot'
 import * as React from 'react'
 
 const buttonStyles = css`
@@ -101,11 +102,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, size = 'default', variant, ...props }, ref) => {
+  ({ className, size = 'default', asChild, variant, ...props }, ref) => {
+    const Comp = asChild ? Slot : 'button'
     return (
-      <button
+      <Comp
         css={buttonStyles}
-        className={`${className} ${size ? sizeVariant[size] : ''} ${
+        className={`${className || ''} ${size ? sizeVariant[size] : ''} ${
           variant ? styleVariant[variant] : ''
         }`}
         ref={ref}
