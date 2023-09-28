@@ -9,7 +9,7 @@ export const EmptyContacts = () => {
     <EmptyContainer>
       <Image priority src={emptyContacts} alt="A person confused" width={200} height={200} />
       <EmptyDescription>
-        Your All Contacts list is empty.
+        Your contacts is empty.
         <br /> Add new contacts to keep your contact list organized.
       </EmptyDescription>
     </EmptyContainer>
