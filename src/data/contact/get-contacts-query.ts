@@ -1,6 +1,6 @@
 import { graphql } from '@/gql'
 import { GetContactsQuery, GetContactsQueryVariables, Order_By } from '@/gql/graphql'
-import { QueryHookOptions, useQuery } from '@apollo/client'
+import { QueryHookOptions, useLazyQuery, useQuery } from '@apollo/client'
 
 export const getContactsQueryKey = 'GetContacts'
 const GET_CONTACTS_QUERY = graphql(`
@@ -47,3 +47,5 @@ export const useGetContactsQuery = (option?: GetContactsQueryOptions) => {
 
   return result
 }
+
+export const useLazyGetContactsQuery = () => useLazyQuery(GET_CONTACTS_QUERY)

@@ -14,7 +14,7 @@ type AddContactFormProps = {
 }
 
 export const AddContactForm = ({ onSubmit, isLoading }: AddContactFormProps) => {
-  const { formState, register, control, handleSubmit, setValue } = useForm<AddContactSchema>({
+  const { formState, register, control, handleSubmit } = useForm<AddContactSchema>({
     resolver: zodResolver(addContactSchema),
     mode: 'onBlur',
     defaultValues: {

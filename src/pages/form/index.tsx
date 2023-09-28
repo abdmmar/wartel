@@ -1,7 +1,7 @@
 import { AddContactForm } from '@/components/contact/add-contact-form'
 import { Button } from '@/components/ui/button'
 import { AddContactSchema } from '@/schemas/contact'
-import { useCreateContact } from '@/services/contact'
+import { useCheckContactName, useCreateContact } from '@/services/contact'
 import styled from '@emotion/styled'
 import { slate } from '@radix-ui/colors'
 import NextLink from 'next/link'
@@ -12,9 +12,23 @@ import { HiChevronLeft } from 'react-icons/hi'
 export default function CreateContactPage() {
   const router = useRouter()
   const { createContact, loading } = useCreateContact()
+  const { isContactExists, loading: checkingContact } = useCheckContactName()
 
   const onSubmit = async (data: AddContactSchema) => {
     try {
+      const isExist = await isContactExists({
+        first_name: data.first_name,
+        last_name: data.last_name,
+      })
+
+      if (isExist) {
+        toast.error(
+          'A contact with the same name already exists. Please choose a unique name for your contact.',
+          { style: { minWidth: 'fit-content', fontSize: '0.875rem' } },
+        )
+        return
+      }
+
       const result = await createContact(data)
 
       if (result.data) {
