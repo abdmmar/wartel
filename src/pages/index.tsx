@@ -165,6 +165,7 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  gap: 1rem;
 `
 const HeaderAction = styled.div`
   display: flex;

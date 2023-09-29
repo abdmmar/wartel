@@ -1,9 +1,11 @@
+import { ErrorFallback } from '@/components/error'
 import { ApolloProvider } from '@/components/provider'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
+import { ErrorBoundary } from 'react-error-boundary'
 
 const Toaster = dynamic(() => import('react-hot-toast').then((c) => c.Toaster))
 
@@ -30,12 +32,14 @@ export default function App({ Component, pageProps }: AppProps) {
           }
         `}
       </style>
-      <ApolloProvider>
-        <div className={`${inter.className}`}>
-          <Toaster />
-          <Component {...pageProps} />
-        </div>
-      </ApolloProvider>
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => window.location.reload()}>
+        <ApolloProvider>
+          <div className={`${inter.className}`}>
+            <Toaster />
+            <Component {...pageProps} />
+          </div>
+        </ApolloProvider>
+      </ErrorBoundary>
     </>
   )
 }

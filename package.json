@@ -30,6 +30,7 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-error-boundary": "3.1.4",
     "react-hook-form": "7.46.2",
     "react-hot-toast": "2.4.1",
     "react-icons": "4.11.0",
