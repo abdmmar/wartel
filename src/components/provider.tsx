@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Spinner } from '@/components/ui/loader'
+import { HomeSkeleton } from '@/components/ui/skeleton'
 import {
   ApolloClient,
   ApolloProvider as ApolloClientProvider,
@@ -46,13 +46,7 @@ export const ApolloProvider = ({ children }: { children: React.ReactNode }) => {
   }, [])
 
   if (!client) {
-    return (
-      <div
-        style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <Spinner>Initializing app...</Spinner>
-      </div>
-    )
+    return <HomeSkeleton />
   }
 
   return <ApolloClientProvider client={client}>{children}</ApolloClientProvider>

@@ -91,12 +91,18 @@ export default function Home() {
             {favouriteContacts.data?.contact.length || 0}
           </ContactContainerCount>
         </ContactContainerHeader>
-        {favouriteContacts.data?.contact.length === 0 ? <EmptyFavouritesContact /> : null}
-        {favouriteContacts.loading === true ? (
-          <Spinner>
-            <p color={slate.slate11}>Fetching your contacts...</p>
-          </Spinner>
-        ) : null}
+        <div
+          style={{
+            minHeight: favouriteContacts.data?.contact?.length === 0 ? '200px' : 'fit-content',
+          }}
+        >
+          {favouriteContacts.data?.contact.length === 0 ? <EmptyFavouritesContact /> : null}
+          {favouriteContacts.loading === true ? (
+            <Spinner>
+              <p color={slate.slate11}>Fetching your contacts...</p>
+            </Spinner>
+          ) : null}
+        </div>
         <ContactList>
           {favouriteContacts.data?.contact.map((contact) => (
             <Contact
@@ -120,12 +126,18 @@ export default function Home() {
           <ContactContainerTitle>All Contacts</ContactContainerTitle>
           <ContactContainerCount>{allContacts.data?.contact.length || 0}</ContactContainerCount>
         </ContactContainerHeader>
-        {allContacts.data?.contact.length === 0 ? <EmptyContacts /> : null}
-        {allContacts.loading === true ? (
-          <Spinner>
-            <p color={slate.slate11}>Fetching your contacts...</p>
-          </Spinner>
-        ) : null}
+        <div
+          style={{
+            minHeight: allContacts.data?.contact?.length === 0 ? '200px' : 'fit-content',
+          }}
+        >
+          {allContacts.data?.contact.length === 0 ? <EmptyContacts /> : null}
+          {allContacts.loading === true ? (
+            <Spinner>
+              <p color={slate.slate11}>Fetching your contacts...</p>
+            </Spinner>
+          ) : null}
+        </div>
         <ContactList>
           {allContacts.data?.contact.map((contact) => (
             <Contact
