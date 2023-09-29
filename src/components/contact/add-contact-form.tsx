@@ -43,13 +43,13 @@ export const AddContactForm = ({ onSubmit, isLoading }: AddContactFormProps) => 
           render={({ field }) => (
             <Input
               {...field}
-              autoFocus
+              id="first_name"
               placeholder="First name"
               onChange={(e) => field.onChange(e.target.value.replace(ALPHANUMERIC_REGEX, ''))}
             />
           )}
         />
-        <ErrorText>{formState.errors.first_name?.message}</ErrorText>
+        <ErrorText role="alert">{formState.errors.first_name?.message}</ErrorText>
       </div>
       <div>
         <Label htmlFor="last_name">Last name</Label>
@@ -59,25 +59,31 @@ export const AddContactForm = ({ onSubmit, isLoading }: AddContactFormProps) => 
           render={({ field }) => (
             <Input
               {...field}
+              id="last_name"
               placeholder="Last name"
               onChange={(e) => field.onChange(e.target.value.replace(ALPHANUMERIC_REGEX, ''))}
             />
           )}
         />
-        <ErrorText>{formState.errors.last_name?.message}</ErrorText>
+        <ErrorText role="alert">{formState.errors.last_name?.message}</ErrorText>
       </div>
       <div>
-        <Label htmlFor="phones.0.number">Phone number</Label>
+        <Label htmlFor="phone-number-0">Phone number</Label>
         {fields.map((field, index) => (
           <FieldArrayContainer key={field.id}>
-            <Input
-              type="tel"
-              inputMode="tel"
-              placeholder="Phone number"
-              {...register(`phones.${index}.number`)}
-            />
+            <FieldArrayInputContainer>
+              <Input
+                type="tel"
+                inputMode="tel"
+                placeholder="Phone number"
+                id={`phone-number-${index}`}
+                data-testid={`phone-number-${index}`}
+                {...register(`phones.${index}.number`)}
+              />
+            </FieldArrayInputContainer>
             <Button
               size="icon"
+              data-testid={`phone-number-action-${index}`}
               onClick={() => {
                 if (index === 0) {
                   append({ number: '' })
@@ -91,9 +97,14 @@ export const AddContactForm = ({ onSubmit, isLoading }: AddContactFormProps) => 
             </Button>
           </FieldArrayContainer>
         ))}
-        <ErrorText>{formState.errors.phones?.message}</ErrorText>
+        <ErrorText role="alert">{formState?.errors?.phones?.[0]?.number?.message}</ErrorText>
       </div>
-      <Button variant="primary" type="submit" disabled={isLoading}>
+      <Button
+        variant="primary"
+        type="submit"
+        data-testid="submit-create-contact"
+        disabled={isLoading}
+      >
         {isLoading ? <Loader /> : 'Save'}
       </Button>
     </AddNewForm>
@@ -114,6 +125,9 @@ const FieldArrayContainer = styled.div`
   :last-child {
     margin-bottom: 0;
   }
+`
+const FieldArrayInputContainer = styled.div`
+  width: 100%;
 `
 const ErrorText = styled.span`
   font-size: 0.75rem;

@@ -1,9 +1,11 @@
 import { ApolloProvider } from '@/components/provider'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
-import { Toaster } from 'react-hot-toast'
+
+const Toaster = dynamic(() => import('react-hot-toast').then((c) => c.Toaster))
 
 const inter = Inter({
   weight: ['400', '500', '600'],
